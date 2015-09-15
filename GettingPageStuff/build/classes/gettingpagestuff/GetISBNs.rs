@@ -1,0 +1,2 @@
+GetISBNs
+NewClass
