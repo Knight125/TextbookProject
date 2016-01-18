@@ -52,10 +52,11 @@ public class NewEmptyJUnitTest {
      public void hello() throws SQLException 
      {
         DatabaseOperations test = new DatabaseOperations("amzseller");
-        String[] colNamesAndTypes = {"price double","AMzdate timestamp"};
+        String[] colNames = {"price","Amzdate"};
+        String[] colTypes = {"double", "timestamp"};
         String[] names = {"price"};
         String[] values = {"50.09"};
-        test.CreateTable("testTable", colNamesAndTypes);
+        test.CreateTable("testTable", colNames, colTypes);
         test.InsertInToTable("testTable", names, values);
      }
      @Test

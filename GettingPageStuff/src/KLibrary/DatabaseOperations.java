@@ -27,7 +27,7 @@ public class DatabaseOperations
         
     public DatabaseOperations(String databaseName) throws SQLException 
     {
-        this.myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+databaseName,"root",""); 
+        this.myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+databaseName,user,pass); 
         myStat = myConn.createStatement();
         //this.tableName = tableName;
     }
@@ -38,13 +38,13 @@ public class DatabaseOperations
         myStat = myConn.createStatement();
     }
     
-    public void CreateTable(String name, String[] colNamesAndTypes)
+    public void CreateTable(String name, String[] colNamesAndExtraStatements, String[] colTypes)
             throws SQLException 
     {
         String query = "CREATE TABLE IF NOT EXISTS "+name+"(";
-        for (String colNamesAndType : colNamesAndTypes) 
+        for (int i = 0;i<colNamesAndExtraStatements.length;i++) 
         {
-            query = query + colNamesAndType+",";
+            query = query + colNamesAndExtraStatements[i]+" "+colTypes[i]+",";
         }
         query = query.substring(0,query.length()-1) + ");";
         System.out.println(query);
@@ -69,4 +69,24 @@ public class DatabaseOperations
         myStat.executeUpdate(query);
     }
     
+    public void QueryWithBasicWhereClause(String tableName, String[] colNamesReturned,String[] where) 
+            throws SQLException
+    {
+        String query = "SELECT ";
+        for (String colName : colNamesReturned)
+        {
+            query = query + colName + ",";
+        }
+        query = query.substring(0,query.length()-1) + " FROM "+tableName+" WHERE ";
+        
+        for(String whereClause : where)
+        {
+            query = query + whereClause + ",";
+        }
+        query = query.substring(0,query.length()-1) + " ; ";
+        
+        System.out.println(query);
+        myStat.executeUpdate(query);
+                
+    }
 }
